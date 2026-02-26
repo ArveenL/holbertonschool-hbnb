@@ -1,4 +1,12 @@
 functionality:
+    part2/hbnb/app/models/amenities.py
+        type or value verification
+    part2/hbnb/app/models/places.py
+        type or value verification
+    part2/hbnb/app/models/reviews.py
+        type or value verification
+    part2/hbnb/app/models/users.py
+        type or value verification
 bug:
 other:
     part2/hbnb/README.md
