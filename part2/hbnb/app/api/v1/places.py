@@ -54,14 +54,25 @@ class PlaceList(Resource):
     @api.response(400, 'Invalid input data')
     def post(self):
         """Register a new place"""
-        # Placeholder for the logic to register a new place
-        pass
+        place_data = api.payload
+
+        new_place = facade.create_place(place_data)
+        return {'id': new_place.id, 'title': new_place.title, 'description': new_place.description, 'price': new_place.price, 'latitude': new_place.latitude, 'longitude': new_place.longitude, 'owner_id': new_place.owner.id}, 201
 
     @api.response(200, 'List of places retrieved successfully')
     def get(self):
         """Retrieve a list of all places"""
-        # Placeholder for logic to return a list of all places
-        pass
+        places = facade.get_all_places()
+
+        return [
+            {
+                'id': place.id,
+                'title': place.title,
+                'latitude': place.latitude,
+                'longitude': place.longitude
+            }
+            for place in places
+        ], 200
 
 @api.route('/<place_id>')
 class PlaceResource(Resource):
@@ -69,8 +80,13 @@ class PlaceResource(Resource):
     @api.response(404, 'Place not found')
     def get(self, place_id):
         """Get place details by ID"""
-        # Placeholder for the logic to retrieve a place by ID, including associated owner and amenities
-        pass
+        place = facade.get_place(place_id)
+        if not place:
+            return {'error': 'Place not found'}, 404
+        owner = place.owner
+        owner_dict = {"id": owner.id, "first_name": owner.first_name, "last_name": owner.last_name, "email": owner.email}
+        list_amenities = [{'id': amenity.id, 'name': amenity.name}for amenity in place.amenities], 200
+        return {'id': place.id, 'title': place.title, 'description': place.description, 'latitude': place.latitude, 'owner': owner_dict, 'amenities': list_amenities}, 200
 
     @api.expect(place_model)
     @api.response(200, 'Place updated successfully')
@@ -78,5 +94,32 @@ class PlaceResource(Resource):
     @api.response(400, 'Invalid input data')
     def put(self, place_id):
         """Update a place's information"""
-        # Placeholder for the logic to update a place by ID
-        pass
+        place_data = api.payload
+
+        if not place_data:
+            return {'error': 'Invalid input data'}, 400
+
+        updated_place = facade.update_place(place_id, place_data)
+
+        if not updated_place:
+            return {'error': 'Amenity not found'}, 404
+        amenities = updated_place.amenities
+        owner = updated_place.owner
+        return {
+            "id": updated_place.id,
+            "title": updated_place.title,
+            "description": updated_place.description,
+            "latitude": updated_place.latitude,
+            "longitude": updated_place.longitude,
+            "owner": {
+                "id": owner.id,
+                "first_name": owner.first_name,
+                "last_name": owner.last_name,
+                "email": owner.email
+            },
+            "amenities": [{
+                "id": amenity.id,
+                "name": amenity.name
+                }for amenity in amenities
+            ]
+        }, 200

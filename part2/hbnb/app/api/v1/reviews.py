@@ -18,14 +18,23 @@ class ReviewList(Resource):
     @api.response(400, 'Invalid input data')
     def post(self):
         """Register a new review"""
-        # Placeholder for the logic to register a new review
-        pass
+        review_data = api.payload
+
+        new_review = facade.create_review(review_data)
+        return {'id': new_review.id, 'text': new_review.text, 'rating': new_review.rating}, 201
 
     @api.response(200, 'List of reviews retrieved successfully')
     def get(self):
         """Retrieve a list of all reviews"""
-        # Placeholder for logic to return a list of all reviews
-        pass
+        reviews = facade.get_all_reviews()
+        return [
+            {
+                'id': review.id,
+                'text': review.text,
+                'rating': review.rating
+            }
+            for review in reviews
+        ], 200
 
 @api.route('/<review_id>')
 class ReviewResource(Resource):
