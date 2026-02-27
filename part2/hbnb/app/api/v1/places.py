@@ -57,6 +57,8 @@ class PlaceList(Resource):
         place_data = api.payload
 
         new_place = facade.create_place(place_data)
+        if new_place is None:
+            return {'error': 'Invalid input data'}, 400
         return {'id': new_place.id, 'title': new_place.title, 'description': new_place.description, 'price': new_place.price, 'latitude': new_place.latitude, 'longitude': new_place.longitude, 'owner_id': new_place.owner.id}, 201
 
     @api.response(200, 'List of places retrieved successfully')
@@ -105,21 +107,4 @@ class PlaceResource(Resource):
             return {'error': 'Amenity not found'}, 404
         amenities = updated_place.amenities
         owner = updated_place.owner
-        return {
-            "id": updated_place.id,
-            "title": updated_place.title,
-            "description": updated_place.description,
-            "latitude": updated_place.latitude,
-            "longitude": updated_place.longitude,
-            "owner": {
-                "id": owner.id,
-                "first_name": owner.first_name,
-                "last_name": owner.last_name,
-                "email": owner.email
-            },
-            "amenities": [{
-                "id": amenity.id,
-                "name": amenity.name
-                }for amenity in amenities
-            ]
-        }, 200
+        return {"message": "Place updated successfully"}, 200

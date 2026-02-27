@@ -85,7 +85,10 @@ class HBnBFacade:
     # -------------------------
 
     def create_place(self, place_data):
-        place_data.update({"owner": self.get_user(place_data['owner_id'])})
+        owner = self.get_user(place_data['owner_id'])
+        if owner is None:
+            return None
+        place_data.update({"owner": owner})
         place_data.pop("owner_id")
 
         place = Place(**place_data)
