@@ -109,7 +109,19 @@ class HBnBFacade:
             setattr(place, key, value)
         return place
 
+    # -------------------------
+    # REVIEW METHODS
+    # -------------------------
+
     def create_review(self, review_data):
+        user = self.get_user(review_data['user_id'])
+        place = self.get_place(review_data['place_id'])
+        if user is None or place is None:
+            return None
+        review_data.update({"user": user})
+        review_data.update({"place": place})
+        review_data.pop("user_id")
+        review_data.pop("place_id")
         review = Review(**review_data)
         self.review_repo.add(review)
         return review
@@ -125,7 +137,7 @@ class HBnBFacade:
         return self.place_repo.get("place", place)
 
     def update_review(self, review_id, review_data):
-        review = self.place_repo.get(review_id)
+        review = self.review_repo.get(review_id)
         if review is None:
             return None
         for key, value in review_data.items():

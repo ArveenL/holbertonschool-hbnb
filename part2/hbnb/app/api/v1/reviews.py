@@ -21,7 +21,13 @@ class ReviewList(Resource):
         review_data = api.payload
 
         new_review = facade.create_review(review_data)
-        return {'id': new_review.id, 'text': new_review.text, 'rating': new_review.rating}, 201
+        return {
+            'id': new_review.id, 
+            'text': new_review.text, 
+            'rating': new_review.rating,
+            'user_id': new_review.user.id,
+            'place_id': new_review.place.id
+            }, 201
 
     @api.response(200, 'List of reviews retrieved successfully')
     def get(self):
@@ -42,8 +48,16 @@ class ReviewResource(Resource):
     @api.response(404, 'Review not found')
     def get(self, review_id):
         """Get review details by ID"""
-        # Placeholder for the logic to retrieve a review by ID
-        pass
+        review = facade.get_review(review_id)
+        if not review:
+            return {'error': 'Place not found'}, 404
+        return {
+            'id': review.id, 
+            'text': review.text, 
+            'rating': review.rating,
+            'user_id': review.user.id,
+            'place_id': review.place.id
+        }, 200
 
     @api.expect(review_model)
     @api.response(200, 'Review updated successfully')
@@ -51,12 +65,20 @@ class ReviewResource(Resource):
     @api.response(400, 'Invalid input data')
     def put(self, review_id):
         """Update a review's information"""
-        # Placeholder for the logic to update a review by ID
-        pass
+        review_data = api.payload
+
+        if not review_data:
+            return {'error': 'Invalid input data'}, 400
+
+        updated_review = facade.update_review(review_id, review_data)
+
+        if not updated_review:
+            return {'error': 'Amenity not found'}, 404
+        return {"message": "Place updated successfully"}, 200
 
     @api.response(200, 'Review deleted successfully')
     @api.response(404, 'Review not found')
     def delete(self, review_id):
         """Delete a review"""
-        # Placeholder for the logic to delete a review
-        pass
+        facade.delete_review(review_id)
+        return {"message": "Review deleted successfully"}, 200

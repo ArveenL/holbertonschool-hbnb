@@ -105,6 +105,4 @@ class PlaceResource(Resource):
 
         if not updated_place:
             return {'error': 'Amenity not found'}, 404
-        amenities = updated_place.amenities
-        owner = updated_place.owner
         return {"message": "Place updated successfully"}, 200
