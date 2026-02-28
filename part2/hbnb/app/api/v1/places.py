@@ -106,3 +106,14 @@ class PlaceResource(Resource):
         if not updated_place:
             return {'error': 'Amenity not found'}, 404
         return {"message": "Place updated successfully"}, 200
+
+@api.route('/<place_id>/reviews')
+class PlaceResource(Resource):
+    @api.response(200, 'List of reviews for the place retrieved successfully')
+    @api.response(404, 'Reviews not found')
+    def get(self, place_id):
+        """Get list of reviews for a place"""
+        reviews = facade.get_reviews_by_place(place_id)
+        if not reviews:
+            return {'error': 'Place not found'}, 404
+        return [{'id': review.id, 'text': review.text, "rating": review.rating}for review in reviews], 200
