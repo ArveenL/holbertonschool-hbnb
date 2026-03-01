@@ -1,4 +1,5 @@
 from app.models.baseModel import BaseModel
+from re import match
 
 class User(BaseModel):
     def __init__(self, first_name, last_name, email, is_admin = False):
@@ -15,7 +16,9 @@ class User(BaseModel):
         self.last_name = last_name
         if not isinstance(last_name, str):
             raise TypeError("last_name must be a string")
-        #TODO verify email
+        regex = "^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9._%+-]+\\.[a-zA-Z][a-zA-Z]+$"
+        if not match(regex, email):
+            raise TypeError("email invalid")
         self.email = email
         if not isinstance(is_admin, bool):
             raise TypeError("is_admin must be a boolean")
