@@ -56,7 +56,10 @@ class PlaceList(Resource):
         """Register a new place"""
         place_data = api.payload
 
-        new_place = facade.create_place(place_data)
+        try:
+            new_place = facade.create_place(place_data)
+        except Exception:
+            return {'error': 'Invalid input data'}, 400
         if new_place is None:
             return {'error': 'Invalid input data'}, 400
         return {'id': new_place.id, 'title': new_place.title, 'description': new_place.description, 'price': new_place.price, 'latitude': new_place.latitude, 'longitude': new_place.longitude, 'owner_id': new_place.owner.id}, 201
@@ -97,14 +100,17 @@ class PlaceResource(Resource):
     def put(self, place_id):
         """Update a place's information"""
         place_data = api.payload
+        place = facade.get_place(place_id)
 
+        if not place:
+            return {'error': 'Place not found'}, 404
         if not place_data:
             return {'error': 'Invalid input data'}, 400
 
         updated_place = facade.update_place(place_id, place_data)
 
         if not updated_place:
-            return {'error': 'Amenity not found'}, 404
+            return {'error': 'Place not found'}, 404
         return {"message": "Place updated successfully"}, 200
 
 @api.route('/<place_id>/reviews')

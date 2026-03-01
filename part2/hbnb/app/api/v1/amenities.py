@@ -20,7 +20,10 @@ class AmenityList(Resource):
         if not amenity_data or 'name' not in amenity_data:
             return {'error': 'Invalid input data'}, 400
 
-        amenity = facade.create_amenity(amenity_data)
+        try:
+            amenity = facade.create_amenity(amenity_data)
+        except Exception:
+            return {'error': 'Invalid input data'}, 400
 
         return {
             'id': amenity.id,

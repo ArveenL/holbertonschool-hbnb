@@ -20,7 +20,10 @@ class ReviewList(Resource):
         """Register a new review"""
         review_data = api.payload
 
-        new_review = facade.create_review(review_data)
+        try:
+            new_review = facade.create_review(review_data)
+        except Exception:
+            return {'error': 'Invalid input data'}, 400
         return {
             'id': new_review.id, 
             'text': new_review.text, 
@@ -66,14 +69,17 @@ class ReviewResource(Resource):
     def put(self, review_id):
         """Update a review's information"""
         review_data = api.payload
+        review = facade.get_review(review_id)
 
         if not review_data:
             return {'error': 'Invalid input data'}, 400
+        if review is None:
+            return {'error': 'Review Not Found'}, 404
 
         updated_review = facade.update_review(review_id, review_data)
 
         if not updated_review:
-            return {'error': 'Amenity not found'}, 404
+            return {'error': 'Invalid input data'}, 400
         return {"message": "Place updated successfully"}, 200
 
     @api.response(200, 'Review deleted successfully')
