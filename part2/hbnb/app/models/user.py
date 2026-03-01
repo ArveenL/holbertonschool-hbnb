@@ -16,7 +16,7 @@ class User(BaseModel):
         self.last_name = last_name
         if not isinstance(last_name, str):
             raise TypeError("last_name must be a string")
-        regex = "^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9._%+-]+\\.[a-zA-Z][a-zA-Z]+$"
+        regex = r"[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Za-z]{2,7}"
         if not match(regex, email):
             raise TypeError("email invalid")
         self.email = email
