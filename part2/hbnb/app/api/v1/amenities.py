@@ -70,6 +70,11 @@ class AmenityResource(Resource):
 
         if not amenity_data:
             return {'error': 'Invalid input data'}, 400
+        if "name" in amenity_data:
+            if not isinstance(amenity_data["name"], str):
+                return {'error': 'Invalid input data'}, 400
+            if len(amenity_data["name"]) > 50:
+                return {'error': 'Invalid input data'}, 400
 
         updated_amenity = facade.update_amenity(amenity_id, amenity_data)
 

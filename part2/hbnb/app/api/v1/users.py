@@ -1,5 +1,6 @@
 from flask_restx import Namespace, Resource, fields
 from app.services import facade
+from re import match
 
 api = Namespace('users', description='User operations')
 
@@ -77,16 +78,38 @@ class UserResource(Resource):
         }, 200
 
 
-    @api.expect(user_model, validate=True)
+    @api.expect(user_model)
     @api.response(200, 'User updated successfully')
     @api.response(404, 'User not found')
+    @api.response(400, 'Invalid input data')
     def put(self, user_id):
         """Update a user by ID"""
         user_data = api.payload
-
-        updated_user = facade.update_user(user_id, user_data)
-        if not updated_user:
+        user = facade.get_user(user_id)
+        if not user:
             return {'error': 'User not found'}, 404
+
+        if "first_name" in user_data:
+            if not isinstance(user_data["first_name"], str):
+                return {'error': 'Invalid input data'}, 400
+            if len(user_data["first_name"]) > 50:
+                return {'error': 'Invalid input data'}, 400
+        if "last_name" in user_data:
+            if not isinstance(user_data["last_name"], str):
+                return {'error': 'Invalid input data'}, 400
+            if len(user_data["last_name"]) > 50:
+                return {'error': 'Invalid input data'}, 400
+        if "email" in user_data:
+            if not isinstance(user_data["email"], str):
+                return {'error': 'Invalid input data'}, 400
+            regex = r"[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Za-z]{2,7}$"
+            if not match(regex, user_data["email"]):
+                return {'error': 'Invalid input data'}, 400
+        if "is_admin" in user_data:
+            if not isinstance(user_data["is_admin"], bool):
+                return {'error': 'Invalid input data'}, 400
+        updated_user = facade.update_user(user_id, user_data)
+
 
         return {
             'id': updated_user.id,

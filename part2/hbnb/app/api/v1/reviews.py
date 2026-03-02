@@ -75,6 +75,15 @@ class ReviewResource(Resource):
             return {'error': 'Invalid input data'}, 400
         if review is None:
             return {'error': 'Review Not Found'}, 404
+        
+        if "text" in review_data:
+            if not isinstance(review_data["text"], str):
+                return {'error': 'Invalid input data'}, 400
+        if "rating" in review_data:
+            if not isinstance(review_data["rating"], int):
+                return {'error': 'Invalid input data'}, 400
+            if review_data["rating"] not in range(1, 6):
+                return {'error': 'Invalid input data'}, 400
 
         updated_review = facade.update_review(review_id, review_data)
 

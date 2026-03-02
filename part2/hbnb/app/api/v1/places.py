@@ -106,6 +106,28 @@ class PlaceResource(Resource):
             return {'error': 'Place not found'}, 404
         if not place_data:
             return {'error': 'Invalid input data'}, 400
+        
+        if "title" in place_data:
+            if not isinstance(place_data["title"], str):
+                return {'error': 'Invalid input data'}, 400
+            if len(place_data["title"]) > 100:
+                return {'error': 'Invalid input data'}, 400
+        if "description" in place_data:
+            if not isinstance(place_data["description"], str):
+                return {'error': 'Invalid input data'}, 400
+        if "price" in place_data:
+            if not isinstance(place_data["price"], (float, int)):
+                return {'error': 'Invalid input data'}, 400
+        if "latitude" in place_data:
+            if not isinstance(place_data["latitude"], (float, int)):
+                return {'error': 'Invalid input data'}, 400
+            if place_data["latitude"] > 90 or place_data["latitude"] < -90:
+                return {'error': 'Invalid input data'}, 400
+        if "longitude" in place_data:
+            if not isinstance(place_data["longitude"], (float, int)):
+                return {'error': 'Invalid input data'}, 400
+            if place_data["longitude"] > 180 or place_data["longitude"] < -180:
+                return {'error': 'Invalid input data'}, 400
 
         updated_place = facade.update_place(place_id, place_data)
 
