@@ -1,0 +1,36 @@
+from app.models.baseModel import BaseModel
+from re import match
+
+class User(BaseModel):
+    def __init__(self, first_name, last_name, email, is_admin = False):
+        super().__init__()
+        if not isinstance(first_name, str):
+            raise TypeError("first_name must be a string")
+        if len(first_name) > 50:
+            raise ValueError("first_name must not be more than 50 characters")
+        self.first_name = first_name
+        if not isinstance(last_name, str):
+            raise TypeError("last_name must be a string")
+        if len(last_name) > 50:
+            raise ValueError("last_name must not be more than 50 characters")
+        self.last_name = last_name
+        if not isinstance(email, str):
+            raise TypeError("email must be a string")
+        regex = r"[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Za-z]{2,7}$"
+        if not match(regex, email):
+            raise TypeError("email invalid")
+        self.email = email
+        if not isinstance(is_admin, bool):
+            raise TypeError("is_admin must be a boolean")
+        self.is_admin = is_admin
+        self.places = []
+
+    def save(self):
+        super().save()
+
+    def update(self, data):
+        super().update(data)
+
+    def add_place(self, place):
+        """Add a Place to the User."""
+        self.places.append(place)
