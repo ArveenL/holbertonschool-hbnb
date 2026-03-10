@@ -2,7 +2,7 @@ from app.models.baseModel import BaseModel
 from re import match
 
 class User(BaseModel):
-    def __init__(self, first_name, last_name, email, is_admin = False):
+    def __init__(self, first_name, last_name, email, password, is_admin = False):
         super().__init__()
         if not isinstance(first_name, str):
             raise TypeError("first_name must be a string")
@@ -20,6 +20,9 @@ class User(BaseModel):
         if not match(regex, email):
             raise TypeError("email invalid")
         self.email = email
+        if not isinstance(password, str):
+            raise TypeError("password must be a string")
+        self.password = self.hash_password(password)
         if not isinstance(is_admin, bool):
             raise TypeError("is_admin must be a boolean")
         self.is_admin = is_admin
@@ -34,3 +37,11 @@ class User(BaseModel):
     def add_place(self, place):
         """Add a Place to the User."""
         self.places.append(place)
+
+    def hash_password(self, password):
+        """Hashes the password before storing it."""
+        self.password = bcrypt.generate_password_hash(password).decode('utf-8')
+
+    def hash_password(self, password):
+        """Hashes the password before storing it."""
+        self.password = bcrypt.generate_password_hash(password).decode('utf-8')
