@@ -24,7 +24,6 @@ place_model = api.model('Place', {
     'price': fields.Float(required=True, description='Price per night'),
     'latitude': fields.Float(required=True, description='Latitude of the place'),
     'longitude': fields.Float(required=True, description='Longitude of the place'),
-    'owner_id': fields.String(required=True, description='ID of the owner'),
     'amenities': fields.List(fields.String, required=True, description="List of amenities ID's")
 })
 
@@ -42,7 +41,6 @@ place_model = api.model('Place', {
     'price': fields.Float(required=True, description='Price per night'),
     'latitude': fields.Float(required=True, description='Latitude of the place'),
     'longitude': fields.Float(required=True, description='Longitude of the place'),
-    'owner_id': fields.String(required=True, description='ID of the owner'),
     'owner': fields.Nested(user_model, description='Owner of the place'),
     'amenities': fields.List(fields.Nested(amenity_model), description='List of amenities'),
     'reviews': fields.List(fields.Nested(review_model), description='List of reviews')
@@ -50,12 +48,16 @@ place_model = api.model('Place', {
 
 @api.route('/')
 class PlaceList(Resource):
+    @jwt_required()
     @api.expect(place_model)
     @api.response(201, 'Place successfully created')
     @api.response(400, 'Invalid input data')
     def post(self):
         """Register a new place"""
         place_data = api.payload
+        place_data.update({"owner_id": get_jwt_identity()})
+        if not place_data.get("description"):
+            place_data.update({"description": ""})
 
         try:
             new_place = facade.create_place(place_data)
@@ -94,7 +96,7 @@ class PlaceResource(Resource):
         list_amenities = [{'id': amenity.id, 'name': amenity.name}for amenity in place.amenities], 200
         return {'id': place.id, 'title': place.title, 'description': place.description, 'latitude': place.latitude, 'owner': owner_dict, 'amenities': list_amenities}, 200
 
-    @api.expect(place_model)
+    @jwt_required()
     @api.response(200, 'Place updated successfully')
     @api.response(404, 'Place not found')
     @api.response(400, 'Invalid input data')
@@ -107,6 +109,8 @@ class PlaceResource(Resource):
             return {'error': 'Place not found'}, 404
         if not place_data:
             return {'error': 'Invalid input data'}, 400
+        if place.owner.id != get_jwt_identity():
+            return {'error': 'Unauthorized action'}, 403
         
         if "title" in place_data:
             if not isinstance(place_data["title"], str):

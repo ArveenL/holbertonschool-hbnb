@@ -80,6 +80,7 @@ class UserResource(Resource):
         }, 200
 
 
+    @jwt_required()
     @api.expect(user_model)
     @api.response(200, 'User updated successfully')
     @api.response(404, 'User not found')
@@ -90,6 +91,8 @@ class UserResource(Resource):
         user = facade.get_user(user_id)
         if not user:
             return {'error': 'User not found'}, 404
+        if not user_id != get_jwt_identity():
+            return {'error': 'Unauthorized action'}, 403
 
         if "first_name" in user_data:
             if not isinstance(user_data["first_name"], str):
@@ -101,12 +104,8 @@ class UserResource(Resource):
                 return {'error': 'Invalid input data'}, 400
             if len(user_data["last_name"]) > 50:
                 return {'error': 'Invalid input data'}, 400
-        if "email" in user_data:
-            if not isinstance(user_data["email"], str):
-                return {'error': 'Invalid input data'}, 400
-            regex = r"[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Za-z]{2,7}$"
-            if not match(regex, user_data["email"]):
-                return {'error': 'Invalid input data'}, 400
+        if "email" in user_data or "password" in user_data:
+            return {'error': 'You cannot modify email or password.'}, 400
         if "is_admin" in user_data:
             if not isinstance(user_data["is_admin"], bool):
                 return {'error': 'Invalid input data'}, 400

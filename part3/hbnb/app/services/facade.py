@@ -138,6 +138,12 @@ class HBnBFacade:
             return None
         return self.review_repo.get_all_by_attribute("place", place)
 
+    def get_reviews_by_user(self, user_id):
+        user = self.user_repo.get(user_id)
+        if user is None:
+            return None
+        return self.review_repo.get_all_by_attribute("user", user)
+
     def update_review(self, review_id, review_data):
         review = self.review_repo.get(review_id)
         if review is None:
