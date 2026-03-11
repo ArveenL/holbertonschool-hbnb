@@ -22,7 +22,7 @@ class User(BaseModel):
         self.email = email
         if not isinstance(password, str):
             raise TypeError("password must be a string")
-        self.password = self.hash_password(password)
+        self.hash_password(password)
         if not isinstance(is_admin, bool):
             raise TypeError("is_admin must be a boolean")
         self.is_admin = is_admin
