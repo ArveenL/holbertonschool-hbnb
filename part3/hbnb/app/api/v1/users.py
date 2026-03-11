@@ -1,7 +1,7 @@
 from flask_restx import Namespace, Resource, fields
 from app.services import facade
 from re import match
-from flask_jwt_extended import jwt_required, get_jwt_identity
+from flask_jwt_extended import jwt_required, get_jwt_identity, get_jwt
 
 api = Namespace('users', description='User operations')
 
@@ -34,13 +34,17 @@ class UserList(Resource):
             for user in users
         ], 200
 
+    @jwt_required()
     @api.expect(user_model, validate=True)
     @api.response(201, 'User successfully created')
     @api.response(400, 'Email already registered')
     def post(self):
         """Register a new user"""
         user_data = api.payload
+        current_user = get_jwt()
 
+        if not current_user.get('is_admin'):
+            return {'error': 'Admin privileges required'}, 403
         existing_user = facade.get_user_by_email(user_data['email'])
         if existing_user:
             return {'error': 'Email already registered'}, 400
@@ -89,9 +93,11 @@ class UserResource(Resource):
         """Update a user by ID"""
         user_data = api.payload
         user = facade.get_user(user_id)
+        current_user = get_jwt()
         if not user:
             return {'error': 'User not found'}, 404
-        if not user_id != get_jwt_identity():
+        admin = current_user.get('is_admin')
+        if not admin and not user_id != get_jwt_identity():
             return {'error': 'Unauthorized action'}, 403
 
         if "first_name" in user_data:
@@ -104,9 +110,20 @@ class UserResource(Resource):
                 return {'error': 'Invalid input data'}, 400
             if len(user_data["last_name"]) > 50:
                 return {'error': 'Invalid input data'}, 400
-        if "email" in user_data or "password" in user_data:
-            return {'error': 'You cannot modify email or password.'}, 400
-        if "is_admin" in user_data:
+        if not admin:
+            if "email" in user_data or "password" in user_data:
+                return {'error': 'You cannot modify email or password.'}, 400
+        else:
+            if "email" in user_data:
+                if not isinstance(user_data["email"], str):
+                    return {'error': 'Invalid input data'}, 400
+                regex = r"[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Za-z]{2,7}$"
+                if not match(regex, user_data["email"]):
+                    return {'error': 'Invalid input data'}, 400
+            if "password" in user_data:
+                if not isinstance(user_data["password"], str):
+                    return {'error': 'Invalid input data'}, 400
+        if admin and "is_admin" in user_data:
             if not isinstance(user_data["is_admin"], bool):
                 return {'error': 'Invalid input data'}, 400
         updated_user = facade.update_user(user_id, user_data)
