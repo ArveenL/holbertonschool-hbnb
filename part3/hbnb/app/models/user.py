@@ -1,50 +1,39 @@
+from app import db, bcrypt
 from app.models.baseModel import BaseModel
 from re import match
-from app import bcrypt
-
 
 class User(BaseModel):
-    def __init__(self, first_name, last_name, email, password, is_admin = False):
-        super().__init__()
-        if not isinstance(first_name, str):
-            raise TypeError("first_name must be a string")
-        if len(first_name) > 50:
-            raise ValueError("first_name must not be more than 50 characters")
-        self.first_name = first_name
-        if not isinstance(last_name, str):
-            raise TypeError("last_name must be a string")
-        if len(last_name) > 50:
-            raise ValueError("last_name must not be more than 50 characters")
-        self.last_name = last_name
-        if not isinstance(email, str):
-            raise TypeError("email must be a string")
-        regex = r"[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Za-z]{2,7}$"
-        if not match(regex, email):
-            raise TypeError("email invalid")
-        self.email = email
-        if not isinstance(password, str):
-            raise TypeError("password must be a string")
-        self.hash_password(password)
-        if not isinstance(is_admin, bool):
-            raise TypeError("is_admin must be a boolean")
-        self.is_admin = is_admin
-        self.places = []
+    __tablename__ = "users"
 
-    def save(self):
-        super().save()
+    first_name = db.Column(db.String(50), nullable=False)
+    last_name = db.Column(db.String(120), nullable=False)
+    email = db.Column(db.String(120), nullable=False, unique=True)
+    password = db.Column(db.String(128), nullable=False)
+    is_admin = db.Column(db.Boolean, default=False)
 
-    def update(self, data):
-        super().update(data)
+    # -------------------------
+    # RELATIONSHIPS
+    # -------------------------
+    places = db.relationship(
+        'Place',
+        backref='owner',
+        lazy='dynamic',
+        cascade='all, delete-orphan'
+    )
+    reviews = db.relationship(
+        'Review',
+        backref='author',
+        lazy='dynamic',
+        cascade='all, delete-orphan'
+    )
 
-    def add_place(self, place):
-        """Add a Place to the User."""
-        self.places.append(place)
-
+    # -------------------------
+    # PASSWORD METHODS
+    # -------------------------
     def hash_password(self, password):
-        """Hashes the password before storing it."""
-        self.password = bcrypt.generate_password_hash(password).decode('utf-8')
+        """Hash the password before storing it."""
+        self.password = bcrypt.generate_password_hash(password).decode("utf-8")
 
     def verify_password(self, password):
-        """Verifies if the provided password matches the hashed password."""
+        """Verify the hashed password."""
         return bcrypt.check_password_hash(self.password, password)
-

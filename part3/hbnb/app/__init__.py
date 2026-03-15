@@ -2,13 +2,23 @@ from flask import Flask
 from flask_restx import Api
 from flask_bcrypt import Bcrypt
 from flask_jwt_extended import JWTManager
+from flask_sqlalchemy import SQLAlchemy  # <-- add SQLAlchemy
 
+# Extensions
+db = SQLAlchemy()  # <-- initialize db
 bcrypt = Bcrypt()
 jwt = JWTManager()
 
 def create_app(config_class="config.DevelopmentConfig"):
     app = Flask(__name__)
     app.config.from_object(config_class)
+
+    # Initialize extensions
+    db.init_app(app)        # <-- initialize SQLAlchemy
+    bcrypt.init_app(app)
+    jwt.init_app(app)
+
+    # Initialize API
     api = Api(
         app,
         version='1.0',
@@ -16,9 +26,8 @@ def create_app(config_class="config.DevelopmentConfig"):
         description='HBnB Application API',
         doc='/api/v1/'
     )
-    bcrypt.init_app(app)
-    jwt.init_app(app)
 
+    # Import namespaces
     from app.api.v1.users import api as users_ns
     from app.api.v1.amenities import api as amenities_ns
     from app.api.v1.places import api as places_ns

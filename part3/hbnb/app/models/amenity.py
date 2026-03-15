@@ -1,16 +1,22 @@
+from app import db
 from app.models.baseModel import BaseModel
 
+# Association table for Place <-> Amenity
+place_amenity = db.Table(
+    'place_amenity',
+    db.Column('place_id', db.String(36), db.ForeignKey('places.id'), primary_key=True),
+    db.Column('amenity_id', db.String(36), db.ForeignKey('amenities.id'), primary_key=True)
+)
+
 class Amenity(BaseModel):
-    def __init__(self, name):
-        super().__init__()
-        if not isinstance(name, str):
-            raise TypeError("name must be a string")
-        if len(name) > 50:
-            raise ValueError("name must not be more than 50 characters")
-        self.name = name
+    __tablename__ = "amenities"
 
-    def save(self):
-        super().save()
+    name = db.Column(db.String(50), nullable=False)
 
-    def update(self, data):
-        super().update(data)
+    # Relationship with Place
+    places = db.relationship(
+        'Place',
+        secondary=place_amenity,
+        lazy='subquery',
+        backref=db.backref('amenities', lazy=True)
+    )
