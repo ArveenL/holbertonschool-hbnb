@@ -3,7 +3,7 @@ import uuid
 from datetime import datetime
 
 class BaseModel(db.Model):
-    __abstract__ = True  # SQLAlchemy will not create a table for BaseModel
+    __abstract__ = True  # SQLAlchemy won't create a table for BaseModel
 
     id = db.Column(db.String(36), primary_key=True, default=lambda: str(uuid.uuid4()))
     created_at = db.Column(db.DateTime, default=datetime.utcnow)

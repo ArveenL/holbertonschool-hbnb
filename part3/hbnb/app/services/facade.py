@@ -15,9 +15,8 @@ class HBnBFacade:
         self.review_repo = SQLAlchemyRepository(Review)
         self.amenity_repo = SQLAlchemyRepository(Amenity)
 
-    # -------------------------
+   
     # USER METHODS
-    # -------------------------
     def create_user(self, user_data):
         user = User(
             first_name=user_data["first_name"],
@@ -50,9 +49,8 @@ class HBnBFacade:
         self.user_repo.update(user_id, {})  # commit
         return user
 
-    # -------------------------
+   
     # PLACE METHODS
-    # -------------------------
     def create_place(self, place_data):
         owner = self.get_user(place_data['user_id'])
         if not owner:
@@ -83,9 +81,8 @@ class HBnBFacade:
         self.place_repo.update(place_id, {})
         return place
 
-    # -------------------------
+   
     # REVIEW METHODS
-    # -------------------------
     def create_review(self, review_data):
         user = self.get_user(review_data['user_id'])
         place = self.get_place(review_data['place_id'])
@@ -130,9 +127,8 @@ class HBnBFacade:
     def delete_review(self, review_id):
         self.review_repo.delete(review_id)
 
-    # -------------------------
+
     # AMENITY METHODS
-    # -------------------------
     def create_amenity(self, amenity_data):
         amenity = Amenity(**amenity_data)
         self.amenity_repo.add(amenity)
@@ -153,9 +149,7 @@ class HBnBFacade:
         self.amenity_repo.update(amenity_id, {})
         return amenity
 
-    # -------------------------
     # PLACE ↔ AMENITY METHODS
-    # -------------------------
     def add_amenity_to_place(self, place_id, amenity_id):
         place = self.get_place(place_id)
         amenity = self.get_amenity(amenity_id)
