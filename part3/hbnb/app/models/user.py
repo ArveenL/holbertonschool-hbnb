@@ -11,7 +11,20 @@ class User(BaseModel):
     password = db.Column(db.String(128), nullable=False)
     is_admin = db.Column(db.Boolean, default=False)
 
-   
+    # Relationships
+    places = db.relationship(
+        'Place',
+        backref='owner',
+        lazy='dynamic',
+        cascade='all, delete-orphan'
+    )
+    reviews = db.relationship(
+        'Review',
+        backref='author',
+        lazy='dynamic',
+        cascade='all, delete-orphan'
+    )
+
     # PASSWORD METHODS (hashes a plain-text password using Flask-Bcrypt 
     # and stores it as a string in the database. 
     # Ensures that passwords are secure and can later be verified without ever storing the raw password.)
