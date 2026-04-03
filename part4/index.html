@@ -1,24 +1,37 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+    <!-- Meta setup -->
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <!-- Page title -->
     <title>List of Places</title>
+
+    <!-- Styles -->
     <link rel="stylesheet" href="styles.css">
+
+    <!-- Favicon -->
+    <link rel="icon" href="images/icon.png">
 </head>
 <body>
-    <!-- Header -->
+
+    <!-- ================= HEADER ================= -->
     <header>
-        <img src="../doc_images/" class="logo" alt="Logo">
+        <!-- Logo -->
+        <img src="images/logo.png" class="logo" alt="Logo">
+
+        <!-- Navigation -->
         <nav>
             <a href="index.html">Home</a>
             <a href="login.html" class="login-button">Login</a>
         </nav>
     </header>
 
-    <!-- Main Content -->
+    <!-- ================= MAIN ================= -->
     <main>
-        <!-- Optional: Filter section -->
+
+        <!-- Optional Filter Section -->
         <section id="filter">
             <label for="price-filter">Max Price:</label>
             <select id="price-filter">
@@ -30,33 +43,37 @@
             </select>
         </section>
 
-        <!-- List of Places -->
-        <section id="places-list">
+        <!-- Places List -->
+        <section>
+            
+            <!-- Place Card 1 -->
             <div class="place-card">
                 <h3>Cozy Apartment</h3>
                 <p>Price per night: $100</p>
                 <a href="place.html" class="details-button">View Details</a>
             </div>
 
+            <!-- Place Card 2 -->
             <div class="place-card">
                 <h3>Modern Loft</h3>
                 <p>Price per night: $150</p>
                 <a href="place.html" class="details-button">View Details</a>
             </div>
 
+            <!-- Place Card 3 -->
             <div class="place-card">
                 <h3>Beach House</h3>
                 <p>Price per night: $200</p>
                 <a href="place.html" class="details-button">View Details</a>
             </div>
+
         </section>
     </main>
 
-    <!-- Footer -->
+    <!-- ================= FOOTER ================= -->
     <footer>
         <p>All rights reserved</p>
     </footer>
 
-    <script src="scripts.js"></script>
 </body>
 </html>

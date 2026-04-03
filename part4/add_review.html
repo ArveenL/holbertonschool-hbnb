@@ -1,35 +1,52 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+    <!-- Meta setup -->
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    
+    <!-- Page title -->
     <title>Add Review</title>
+
+    <!-- Stylesheet -->
     <link rel="stylesheet" href="styles.css">
+
+    <!-- Optional favicon -->
+    <link rel="icon" href="images/icon.png">
 </head>
 <body>
-    <!-- Header -->
+
+    <!-- ================= HEADER ================= -->
     <header>
-        <img src="../doc_images/" class="logo" alt="Logo">
+        <!-- Application Logo -->
+        <img src="images/logo.png" class="logo" alt="Logo">
+
+        <!-- Navigation Bar -->
         <nav>
             <a href="index.html">Home</a>
             <a href="login.html" class="login-button">Login</a>
         </nav>
     </header>
 
-    <!-- Main Content -->
+    <!-- ================= MAIN CONTENT ================= -->
     <main>
+
+        <!-- Add Review Section -->
         <section class="add-review">
-            <!-- Identify which place is being reviewed -->
-            <h2>Add a Review for <span id="place-name">Place Name</span></h2>
             
-            <form id="review-form">
-                <!-- Reviewer Name -->
+            <!-- Page Title -->
+            <h2>Add a Review for <span id="place-name">Place Name</span></h2>
+
+            <!-- Review Form -->
+            <form class="form">
+                
+                <!-- User Name -->
                 <label for="user">Your Name:</label>
-                <input type="text" id="user" name="user" placeholder="Enter your name" required>
+                <input type="text" id="user" name="user" required>
 
                 <!-- Review Text -->
                 <label for="review">Your Review:</label>
-                <textarea id="review" name="review" placeholder="Write your review here..." required></textarea>
+                <textarea id="review" name="review" required></textarea>
 
                 <!-- Rating -->
                 <label for="rating">Rating:</label>
@@ -42,17 +59,18 @@
                     <option value="5">5 ⭐⭐⭐⭐⭐</option>
                 </select>
 
-                <!-- Submit -->
+                <!-- Submit Button -->
                 <button type="submit">Submit Review</button>
+
             </form>
         </section>
+
     </main>
 
-    <!-- Footer -->
+    <!-- ================= FOOTER ================= -->
     <footer>
         <p>All rights reserved</p>
     </footer>
 
-    <script src="scripts.js"></script>
 </body>
 </html>

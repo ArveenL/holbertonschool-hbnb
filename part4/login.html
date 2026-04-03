@@ -1,46 +1,61 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+    <!-- Meta setup -->
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <!-- Page title -->
     <title>Login</title>
+
+    <!-- Stylesheet -->
     <link rel="stylesheet" href="styles.css">
+
+    <!-- Favicon -->
+    <link rel="icon" href="images/icon.png">
 </head>
 <body>
-    <!-- Header -->
+
+    <!-- ================= HEADER ================= -->
     <header>
-        <img src="../doc_images/" class="logo" alt="Logo">
+        <!-- Application Logo -->
+        <img src="images/logo.png" class="logo" alt="Logo">
+
+        <!-- Navigation -->
         <nav>
             <a href="index.html">Home</a>
             <a href="login.html" class="login-button">Login</a>
         </nav>
     </header>
 
-    <!-- Main Content -->
+    <!-- ================= MAIN ================= -->
     <main>
+        <!-- Login Section -->
         <section class="login-section">
-            <form id="login-form">
+
+            <!-- Login Form -->
+            <form class="form">
                 <h2>Login</h2>
 
-                <!-- Email -->
+                <!-- Email Field -->
                 <label for="email">Email:</label>
                 <input type="email" id="email" name="email" placeholder="Enter your email" required>
 
-                <!-- Password -->
+                <!-- Password Field -->
                 <label for="password">Password:</label>
                 <input type="password" id="password" name="password" placeholder="Enter your password" required>
 
-                <!-- Submit -->
+                <!-- Submit Button -->
                 <button type="submit">Login</button>
             </form>
+
         </section>
     </main>
 
-    <!-- Footer -->
+    <!-- ================= FOOTER ================= -->
     <footer>
         <p>All rights reserved</p>
     </footer>
 
-    <script src="scripts.js"></script>
 </body>
 </html>

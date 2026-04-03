@@ -1,24 +1,37 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+    <!-- Meta setup -->
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <!-- Page title -->
     <title>Place Details</title>
+
+    <!-- Stylesheet -->
     <link rel="stylesheet" href="styles.css">
+
+    <!-- Favicon -->
+    <link rel="icon" href="images/icon.png">
 </head>
 <body>
-    <!-- Header -->
+
+    <!-- ================= HEADER ================= -->
     <header>
-        <img src="../doc_images/" class="logo" alt="Logo">
+        <!-- Application Logo -->
+        <img src="images/logo.png" class="logo" alt="Logo">
+
+        <!-- Navigation -->
         <nav>
             <a href="index.html">Home</a>
             <a href="login.html" class="login-button">Login</a>
         </nav>
     </header>
 
-    <!-- Main Content -->
+    <!-- ================= MAIN ================= -->
     <main>
-        <!-- Place Details Section -->
+
+        <!-- ================= PLACE DETAILS ================= -->
         <section class="place-details">
             <h2>Cozy Apartment</h2>
             <p><strong>Host:</strong> John Doe</p>
@@ -26,7 +39,7 @@
             <p><strong>Description:</strong> A cozy apartment in the city center, perfect for a weekend getaway.</p>
         </section>
 
-        <!-- Place Info / Amenities -->
+        <!-- ================= PLACE INFO / AMENITIES ================= -->
         <section class="place-info">
             <h3>Amenities</h3>
             <ul>
@@ -37,16 +50,18 @@
             </ul>
         </section>
 
-        <!-- Reviews Section -->
+        <!-- ================= REVIEWS ================= -->
         <section class="reviews">
             <h3>Reviews</h3>
             
+            <!-- Review Card 1 -->
             <div class="review-card">
                 <p><strong>User:</strong> Jane</p>
                 <p><strong>Rating:</strong> 5/5</p>
                 <p><strong>Comment:</strong> Amazing stay! Highly recommend.</p>
             </div>
 
+            <!-- Review Card 2 -->
             <div class="review-card">
                 <p><strong>User:</strong> Bob</p>
                 <p><strong>Rating:</strong> 4/5</p>
@@ -54,16 +69,21 @@
             </div>
         </section>
 
-        <!-- Add Review Form -->
+        <!-- ================= ADD REVIEW FORM ================= -->
         <section class="add-review">
             <h2>Add a Review</h2>
-            <form id="review-form">
+
+            <!-- Form -->
+            <form class="form">
+                <!-- User Name -->
                 <label for="user">Your Name:</label>
                 <input type="text" id="user" name="user" placeholder="Enter your name" required>
 
+                <!-- Review Text -->
                 <label for="review-text">Review:</label>
                 <textarea id="review-text" name="review-text" placeholder="Write your review here..." required></textarea>
 
+                <!-- Rating -->
                 <label for="rating">Rating:</label>
                 <select id="rating" name="rating" required>
                     <option value="">Select rating</option>
@@ -74,16 +94,17 @@
                     <option value="5">5 ⭐⭐⭐⭐⭐</option>
                 </select>
 
+                <!-- Submit Button -->
                 <button type="submit">Submit Review</button>
             </form>
         </section>
+
     </main>
 
-    <!-- Footer -->
+    <!-- ================= FOOTER ================= -->
     <footer>
         <p>All rights reserved</p>
     </footer>
 
-    <script src="scripts.js"></script>
 </body>
 </html>
