@@ -32,71 +32,19 @@
     <main>
 
         <!--  PLACE DETAILS  -->
-        <section class="place-details">
-            <h2>Cozy Apartment</h2>
-            <p><strong>Host:</strong> John Doe</p>
-            <p><strong>Price:</strong> $100/night</p>
-            <p><strong>Description:</strong> A cozy apartment in the city center, perfect for a weekend getaway.</p>
+        <section class="place-details" id="place-details">
+            <!-- Dynamic content will be inserted here -->
         </section>
 
         <!--  PLACE INFO / AMENITIES  -->
-        <section class="place-info">
-            <h3>Amenities</h3>
-            <ul>
-                <li>WiFi</li>
-                <li>Kitchen</li>
-                <li>Parking</li>
-                <li>Air Conditioning</li>
-            </ul>
+        <section class="place-info" id="place-info">
+            <!-- Dynamic amenities -->
         </section>
 
         <!-- REVIEWS -->
-        <section class="reviews">
+        <section class="reviews" id="reviews">
             <h3>Reviews</h3>
-            
-            <!-- Review Card 1 -->
-            <div class="review-card">
-                <p><strong>User:</strong> Jane</p>
-                <p><strong>Rating:</strong> 5/5</p>
-                <p><strong>Comment:</strong> Amazing stay! Highly recommend.</p>
-            </div>
-
-            <!-- Review Card 2 -->
-            <div class="review-card">
-                <p><strong>User:</strong> Bob</p>
-                <p><strong>Rating:</strong> 4/5</p>
-                <p><strong>Comment:</strong> Great location but a bit noisy at night.</p>
-            </div>
-        </section>
-
-        <!--  ADD REVIEW FORM  -->
-        <section class="add-review">
-            <h2>Add a Review</h2>
-
-            <!-- Form -->
-            <form class="form" id="add-review-form">
-                <!-- User Name -->
-                <label for="user">Your Name:</label>
-                <input type="text" id="user" name="user" placeholder="Enter your name" required>
-
-                <!-- Review Text -->
-                <label for="review-text">Review:</label>
-                <textarea id="review-text" name="review-text" placeholder="Write your review here..." required></textarea>
-
-                <!-- Rating -->
-                <label for="rating">Rating:</label>
-                <select id="rating" name="rating" required>
-                    <option value="">Select rating</option>
-                    <option value="1">1 ⭐</option>
-                    <option value="2">2 ⭐⭐</option>
-                    <option value="3">3 ⭐⭐⭐</option>
-                    <option value="4">4 ⭐⭐⭐⭐</option>
-                    <option value="5">5 ⭐⭐⭐⭐⭐</option>
-                </select>
-
-                <!-- Submit Button -->
-                <button type="submit">Submit Review</button>
-            </form>
+            <!-- Dynamic reviews -->
         </section>
 
     </main>
@@ -105,6 +53,7 @@
     <footer>
         <p>All rights reserved</p>
     </footer>
+
     <script src="scripts.js"></script>
 
 </body>

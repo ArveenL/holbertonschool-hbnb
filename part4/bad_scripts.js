@@ -38,7 +38,7 @@ function fetchPlaces(token) {
     .then(response => response.json())
     .then(data => displayPlaces(data))
     .catch(error => console.error('Error fetching places:', error));
-}
+}   
 
 // Populate the places list dynamically
 function displayPlaces(places) {
@@ -59,7 +59,9 @@ function displayPlaces(places) {
     });
 }
 
-// Client-side price filtering
+// CLIENT-SIDE PRICE FILTERING
+// - prevents crash on pages without filter dropdown
+// - required for safe multi-page JS
 const priceFilter = document.getElementById('price-filter');
 priceFilter.addEventListener('change', function() {
     const selected = this.value;
@@ -75,5 +77,9 @@ priceFilter.addEventListener('change', function() {
     });
 });
 
-// Run on page load
-checkAuthentication();
+// RUN ON PAGE LOAD
+// - ensures DOM is loaded before JS runs
+// - avoids null element errors
+document.addEventListener('DOMContentLoaded', () => {
+    checkAuthentication();
+});
